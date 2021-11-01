@@ -2,4 +2,4 @@
 for sts
 
 
-[notion_정리](https://www.notion.so/21-10-25-99733545be304081b42347e3f1644f8b)
+[notion_정리](https://www.notion.so/OJT-cb9e2704af354bebb3c83e9dd099d441)
