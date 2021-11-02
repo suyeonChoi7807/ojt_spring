@@ -12,7 +12,7 @@ public class JDBCUtil {
 	   
       try {
          Class.forName(driver);
-         Connection con = DriverManager.getConnection(url, "sa", "");
+         Connection con = DriverManager.getConnection(url, "sa", "0000");
          return con;
          
       }catch(Exception e) {
