@@ -4,37 +4,53 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * 
+ * ìë°”ì—ì„œ SHA ì•Œê³ ë¦¬ì¦˜ì„ ì‚¬ìš©í•˜ë ¤ë©´ MessageDigest í´ë˜ìŠ¤ë¥¼ ì´ìš©í•œë‹¤.
+ * update() ë©”ì†Œë“œë¥¼ í˜¸ì¶œí•  ë•Œë§ˆë‹¤ ê°ì²´ ë‚´ì— ì €ì¥ëœ digest ê°’ì´ ê³„ì†í•´ì„œ ê°±ì‹ ëœë‹¤.
+ * ìµœì¢…ì ìœ¼ë¡œ digest() ë©”ì†Œë“œë¥¼ í˜¸ì¶œí•˜ë©´ ê·¸ ê°’ì„ ê°€ì ¸ì˜¬ ìˆ˜ ìˆë‹¤.
+ *
+ */
+
 public class PasswordEncryptUtil {
-			//ÆĞ½º¿öµå¸¦ ¾ÏÈ£È­ ½ÃÅ°´Â ¸Ş¼Òµå ±¸Çö
-			public static String encryptSHA256(String plainText) {
+		//íŒ¨ìŠ¤ì›Œë“œë¥¼ ë°›ì•„ì„œ ì•”í˜¸í™” ì‹œí‚¤ëŠ” ë©”ì†Œë“œ êµ¬í˜„
 	
-				//ÆĞ½º¿öµå ÁöÁ¤
-				//String plainText = "test1234";    //Æò¹®(plainText)
-				String sha256 = "";
-				
-				try {
-					//MessageDigest Å¬·¡½ºÀÇ getInstance() ¸Ş¼ÒµåÀÇ ¸Å°³º¯¼ö¿¡ "SHA-256" ¾Ë°í¸®Áò ÀÌ¸§À»
-					//ÁöÁ¤ÇÔÀ¸·Î½á ÇØ´ç ¾Ë°í¸®Áò¿¡¼­ ÇØ½Ã°ªÀ» °è»êÇÏ´Â MessageDigest¸¦ ±¸ÇÒ ¼ö ÀÖ´Ù.
-					MessageDigest mdSHA256 = MessageDigest.getInstance("SHA-256");
-					
-					//µ¥ÀÌÅÍ(ÆĞ½º¿öµå Æò¹®)¸¦ ÇÑ´Ù. Áï '¾ÏÈ£È­' ÇÑ´Ù¿Í À¯»çÇÑ °³³äÀÌ´Ù.
-					mdSHA256.update(plainText.getBytes("UTF-8"));
-					
-					//¹ÙÀÌÆ® ¹è¿­·Î ÇØ½¬¸¦ ¹İÈ¯ÇÑ´Ù.
-					byte[] sha256Hash = mdSHA256.digest();
-					
-					//StringBuffer °´Ã¼´Â °è¼ÓÇØ¼­ append¸¦ ÇØµµ °´Ã¼´Â ¿ÀÁ÷ ÇÏ³ª¸¸ »ı¼ºµÈ´Ù. ¸Ş¸ğ¸® ³¶ºñ °³¼±			
-					StringBuffer hexSHA256hash = new StringBuffer();
-					
-					//256ºñÆ®·Î »ı¼º => 32Byte => 1Byte(8bit) => 16Áø¼ö 2ÀÚ¸®·Î º¯È¯ => 16Áø¼ö ÇÑÀÚ¸®´Â 4bit
-					for(byte b : sha256Hash) {
-						String hexString = String.format("%02x", b);
-						hexSHA256hash.append(hexString);
-					}
-					sha256 = hexSHA256hash.toString();
-				}catch(NoSuchAlgorithmException e) {e.printStackTrace();		
-				}catch(UnsupportedEncodingException e) {e.printStackTrace();}
-				
-				return sha256;
+		public static String encryptSHA256(String plainText) {
+
+		String sha256 = "";
+		
+		try {
+			//MessageDigest í´ë˜ìŠ¤ì˜ getInstance() ë©”ì†Œë“œì˜ ë§¤ê°œë³€ìˆ˜ì— 'SHA-256' ì•Œê³ ë¦¬ì¦˜ ì´ë¦„ì„
+			//ì§€ì •í•¨ìœ¼ë¡œì¨ í•´ë‹¹ ì•Œê³ ë¦¬ì¦˜ì—ì„œ í•´ì‹œ ê°’ì„ ê³„ì‚°í•˜ëŠ” mdSHA256ì„ êµ¬í•  ìˆ˜ ìˆë‹¤.
+			MessageDigest mdSHA256 = MessageDigest.getInstance("SHA-256");
+			
+			//ë°ì´í„°(íŒ¨ìŠ¤ì›Œë“œ í‰ë¬¸)ë¥¼ updateí•œë‹¤. ì¦‰,'ì•”í˜¸í™”'í•œë‹¤ì™€ ìœ ì‚¬í•œ ê°œë…ì´ë‹¤.
+			mdSHA256.update(plainText.getBytes("UTF-8"));
+			
+			//digest(): byte ë°°ì—´ë¡œ í•´ì‹œë¥¼ ë°˜í™˜(return)ì‹œí‚¨ë‹¤.
+			byte[] sha256Hash = mdSHA256.digest();
+			
+			
+			//ë¬¸ìì—´ì„ ê³„ì† ë³€ê²½í•˜ëŠ” ë“±ì˜ ë³€í™”ê°€ ìˆìœ¼ë©´ StringBufferë¥¼ ì‚¬ìš©í•˜ëŠ” ê²ƒì´ ì¢‹ë‹¤.
+			//String: ë°ì´í„°ë¥¼ ì¶”ê°€, ë³€ê²½í•  ë•Œë§ˆë‹¤ ìƒˆë¡œìš´ ê°ì²´ê°€ ìƒì„±ëŒ
+			//StirngBufferê°ì²´ëŠ” ê³„ì†í•´ì„œ appendë¥¼ í•´ë„ ê°ì²´ëŠ” ì˜¤ì§ í•˜ë‚˜ë§Œ ìƒì„±ëœë‹¤. ë©”ëª¨ë¦¬ ë‚­ë¹„ë¥¼ ê°œì„ !
+			//=> StringBufferê°€ íš¨ìœ¨ì !
+			StringBuffer hexSHA256hash = new StringBuffer();
+			
+			//256ë¹„íŠ¸ë¡œ ìƒì„± => 32Byte => 1Byte(8bit) => 16ì§„ìˆ˜ 2ìë¦¬ë¡œ ë³€í™˜ => 16ì§„ìˆ˜ í•œìë¦¬ëŠ” 4bit
+			for(byte b: sha256Hash) {
+				String hexString = String.format("%02x", b); //16ì§„ìˆ˜ ë‘ìë¦¬ë¡œ ë³€ê²½
+				hexSHA256hash.append(hexString);
 			}
+			
+			sha256 = hexSHA256hash.toString();
+		}catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		return sha256;
+		
+		}
 }

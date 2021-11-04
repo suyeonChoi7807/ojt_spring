@@ -1,77 +1,85 @@
 package com.company.annotation.common;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class JDBCUtil {
-	//H2 DB ¿¬µ¿¿¡ °ü·Ã ¼Ò½º
-		static final String driver = "org.h2.Driver";
-		static final String url = "jdbc:h2:tcp://localhost/~/test";
-		
-		public static Connection getConnction() throws Exception{
-			try {
-				Class.forName(driver);
-				Connection con = DriverManager.getConnection(url, "sa", "");
-				return con;
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-		
-		/*
-		 * ¸Ş¼Òµå ¿À¹ö·Îµù  => µğÇü¼º ±¸Çö
-		 */
-		//DML(insert, update, delete) ÀÛ¾÷ Á¾·á ½Ã È£ÃâµÇ´Â ¸Ş¼Òµå
-		public static void close(PreparedStatement pstmt, Connection conn) {
-			if(pstmt != null) {
-				try {
-					if(!pstmt.isClosed()) pstmt.close();   //ÀÚ¿ø ÇØÁ¦
-				}catch(Exception e) {
-					e.printStackTrace();
-				}finally {
-					pstmt = null;
-				}
-			}if(conn != null) {
-				try {
-					if(!conn.isClosed()) conn.close();
-				}catch(Exception e) {
-					e.printStackTrace();
-				}finally {
-					conn = null;
-				}
-			}
-		}
-		
-		//select ÀÛ¾÷ Á¾·á ½Ã È£ÃâµÇ´Â ¸Ş¼Òµå
-		public static void close(ResultSet rs, PreparedStatement pstmt, Connection conn) {
-			if(rs != null) {
-				try {
-					if(!rs.isClosed()) rs.close();   //ÀÚ¿ø ÇØÁ¦
-				}catch(Exception e) {
-					e.printStackTrace();
-				}finally {
-					rs = null;
-				}
-			}
-			if(pstmt != null) {
-				try {
-					if(!pstmt.isClosed()) pstmt.close();   //ÀÚ¿ø ÇØÁ¦
-				}catch(Exception e) {
-					e.printStackTrace();
-				}finally {
-					pstmt = null;
-				}
-			}if(conn != null) {
-				try {
-					if(!conn.isClosed()) conn.close();
-				}catch(Exception e) {
-					e.printStackTrace();
-				}finally {
-					conn = null;
-				}
-			}
-		}
+   // H2 DB ì—°ë™ì— ê´€ë ¨ ì†ŒìŠ¤
+   
+   static final String driver = "org.h2.Driver";
+   static final String url = "jdbc:h2:tcp://localhost/~/test";
+   
+   public static Connection getConnection() throws Exception{
+	   
+      try {
+         Class.forName(driver);
+         Connection con = DriverManager.getConnection(url, "sa", "0000");
+         return con;
+         
+      }catch(Exception e) {
+         e.printStackTrace();
+      }
+      
+	return null;
+   }
+   
+   
+   //METHOD OVERLOADING(ë©”ì†Œë“œ ì˜¤ë²„ë¡œë”©)
+   //DML(insert, update, delete) ì‘ì—… ì¢…ë£Œ ì‹œ í˜¸ì¶œë˜ëŠ” ë©”ì†Œë“œ
+   public static void close(PreparedStatement pstmt, Connection conn) {
+	   if(pstmt != null) {
+		   try {
+			   if(!pstmt.isClosed()) pstmt.close();
+		   } catch (Exception e) {
+			// TODO: handle exception
+			   e.printStackTrace();
+		   } finally {
+			   pstmt = null;
+		   } 
+	   }
+	   if(conn != null) {
+		   try {
+			   if(!conn.isClosed()) conn.close();
+		   } catch (Exception e) {
+			// TODO: handle exception
+			   e.printStackTrace();
+		   } finally {
+			   conn = null;
+		   }
+	   }
+   }
+   
+   //select ì‘ì—… ì¢…ë£Œ ì‹œ í˜¸ì¶œë˜ëŠ” ë©”ì†Œë“œ
+   public static void close(ResultSet rs, PreparedStatement pstmt, Connection conn) {
+	   if(rs != null) {
+		   try {
+			   if(!rs.isClosed()) rs.close();
+		   } catch (Exception e) {
+			// TODO: handle exception
+			   e.printStackTrace();
+		   } finally {
+			   rs = null;
+		   } 
+	   }
+	   if(pstmt != null) {
+		   try {
+			   if(!pstmt.isClosed()) pstmt.close();
+		   } catch (Exception e) {
+			// TODO: handle exception
+			   e.printStackTrace();
+		   } finally {
+			   pstmt = null;
+		   } 
+	   }
+	   if(conn != null) {
+		   try {
+			   if(!conn.isClosed()) conn.close();
+		   } catch (Exception e) {
+			// TODO: handle exception
+			   e.printStackTrace();
+		   } finally {
+			   conn = null;
+		   }
+	   }
+   }
+   
 }

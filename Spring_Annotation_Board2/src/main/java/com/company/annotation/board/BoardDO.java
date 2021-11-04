@@ -1,32 +1,59 @@
 package com.company.annotation.board;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class BoardDO {
-	private int seq;			//°Ô½Ã±Û¹øÈ£
-	private String title;		//Á¦¸ñ
-	private String writer;		//ÀÛ¼ºÀÚ
-	private String content;		//°Ô½Ã±Û³»¿ë
-	private Date regdate;		//ÀÛ¼ºÀÏÀÚ
-	private int cnt;			//Á¶È¸¼ö
+	private int seq; //ê²Œì‹œê¸€ ë²ˆí˜¸
+	private String title; //ì œëª©
+	private String writer; //ì‘ì„±ì
+	private String content; //ê²Œì‹œê¸€ ë‚´ìš©
+	private Date regdate; //ì‘ì„±ì¼ì
+	private int cnt; //ì¡°íšŒìˆ˜
+	private String searchCondition;
 	
-	//getter, setter ¸Ş¼Òµå
-	public int getSeq() {return seq;}
-	public void setSeq(int seq) {this.seq = seq;}
 	
-	public String getTitle() {return title;}
-	public void setTitle(String title) {this.title = title;}
-	
-	public String getWriter() {return writer;}
-	public void setWriter(String writer) {this.writer = writer;}
-	
-	public String getContent() {return content;}
-	public void setContent(String content) {this.content = content;}
-	
-	public Date getRegdate() {return regdate;}
-	public void setRegdate(Date regdate) {this.regdate = regdate;}
-	
-	public int getCnt() {return cnt;}
-	public void setCnt(int cnt) {this.cnt = cnt;}
+	//getter, setter ë©”ì†Œë“œ
+	public int getSeq() {
+		return seq;
+	}
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public Date getRegdate() {
+		return regdate;
+	}
+	public void setRegdate(Date regdate) {
+		this.regdate = regdate;
+	}
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+	public String getSearchCondition() {
+		return searchCondition;
+	}
+	public void setSearchCondition(String searchCondition) {
+		this.searchCondition = searchCondition;
+	}
 }
 

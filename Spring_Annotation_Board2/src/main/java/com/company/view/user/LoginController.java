@@ -9,22 +9,21 @@ import com.company.annotation.user.UserDAO;
 import com.company.annotation.user.UserDO;
 
 @Controller
-public class LoginController {   //Controller Å¬·¡½º´Â POJO Å¬·¡½º·Î ±¸ÇöÇÑ´Ù!!
-
-	/*
-	 * @RequestMapping ¾î³ëÅ×ÀÌ¼ÇÀº ¿äÃ» URLÀ» ¾î¶² ¸Ş¼Òµå°¡ Ã³¸®ÇÒÁö ¿©ºÎ¸¦ °áÁ¤ÇÑ´Ù.
-	 */
+public class LoginController { //Controller í´ë˜ìŠ¤ëŠ” POJO í´ë˜ìŠ¤ë¡œ êµ¬í˜„í•œë‹¤.!!
+	
 	@RequestMapping("/login.do")
 	public String login(UserDO userDO, UserDAO userDAO, HttpSession session) {
 		UserDO user = userDAO.getUser(userDO);
-		
-		if(user != null) {
-			session.setAttribute("userName", user.getName());
-			System.out.println("·Î±×ÀÎ ¼º°ø");
+	
+		if(user!=null) {
+			session.setAttribute("userName", user.getName()); //ë¡œê·¸ì¸ ì‚¬ëŒì˜ ì •ë³´ name ì €ì¥
+			System.out.println("ë¡œê·¸ì¸ ì„±ê³µ");
 			return "getBoardList.do";
 		}else {
-			System.out.println("·Î±×ÀÎ ½ÇÆĞ");
+			System.out.println("ë¡œê·¸ì¸ ì‹¤íŒ¨");
 			return "login.jsp";
-		}		
+		}
+		
 	}
 }
+

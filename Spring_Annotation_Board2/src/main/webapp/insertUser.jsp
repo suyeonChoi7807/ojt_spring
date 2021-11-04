@@ -5,11 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>insertUser.jsp => 회원가입 페이지</title>
-<style>
+<style type="text/css">
 	#div_box {
-		position:absolute;
-		top:10%;
-		left:40%;
+		position: absolute;
+		top: 10%;
+		left: 40%;
 	}
 </style>
 </head>
@@ -45,6 +45,3 @@
 	</div>
 </body>
 </html>
-
-
-

@@ -4,77 +4,82 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import com.company.annotation.user.UserDO;
 import com.company.annotation.common.JDBCUtil;
 import com.company.annotation.common.PasswordEncryptUtil;
 
 public class UserDAO {
-	//DB °ü·Ã º¯¼ö ¼±¾ğ
-		private Connection			conn = null;
-		private PreparedStatement	pstmt = null;
-		private ResultSet			rs = null;
+	//DB ê´€ë ¨ ë³€ìˆ˜ ì„ ì–¸
+	private Connection conn = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
+	
+	//ì¶”ê°€
+	//íšŒì› ê°€ì… ì‹œ íŒ¨ìŠ¤ì›Œë“œë¥¼ ì•”í˜¸í™” ì‹œí‚¨ ë°ì´í„°ë¥¼ ì €ì¥í•  ì°¸ì¡°ë³€ìˆ˜ ì„ ì–¸
+	String pwEncrypt;
+	
+	//SQL ëª…ë ¹ì–´
+	private final String USER_GET = "select * from users where id=? and password=?";
+	
+	//ì¶”ê°€
+	private final String USER_INSERT = "insert into users values (?,?,?,?,?)";
+	
+	//ë¡œê·¸ì¸ user ì¡°íšŒ(select) ë©”ì†Œë“œ êµ¬í˜„
+	public UserDO getUser(UserDO userObj) {
+		UserDO user = null;
 		
-		//Ãß°¡
-				//È¸¿ø °¡ÀÔ ½Ã ÆĞ½º¿öµå¸¦ ¾ÏÈ£È­ ½ÃÅ² µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ ÂüÁ¶º¯¼ö ¼±¾ğ
-				String pwEncrypt;
-				
-				//SQL ¸í·É¾î
-				private final String USER_GET 
-				          = "select * from users where id=? and password=?";
-				//Ãß°¡
-				private final String USERS_INSERT = "insert into users values(?,?,?,?,?)";
-				
-				//·Î±×ÀÎ user Á¶È¸(select) ¸Ş¼Òµå ±¸Çö
-				public UserDO getUser(UserDO userObj) {
-					UserDO user = null;
-					
-					try {
-						System.out.println("===> JDBC·Î getUser() ±â´É Ã³¸®µÊ!");
-						
-						conn = JDBCUtil.getConnction();
-						pstmt = conn.prepareStatement(USER_GET);
-						pstmt.setString(1, userObj.getId());
-						pstmt.setString(2, userObj.getPassword());
-						
-						rs = pstmt.executeQuery();
-						
-						if(rs.next()) {
-							user = new UserDO();
-							user.setId(rs.getString("ID"));
-							user.setPassword(rs.getString("PASSWORD"));
-							//Ãß°¡
-							user.setName(rs.getString("NAME"));
-							user.setRole(rs.getString("ROLE"));
-						}			
-					}catch(Exception e) {
-						e.printStackTrace();
-					}finally {
-						JDBCUtil.close(rs, pstmt, conn);
-					}
-					return user;
-				} //end getUser() =====================================================
-				
-				//È¸¿ø°¡ÀÔ insert ¸Ş¼Òµå ±¸Çö
-				public void insertUser(UserDO userDO) {
-					System.out.println("===> insertUser() ±â´É Ã³¸®");
-					
-					try {
-						conn = JDBCUtil.getConnction();
-						pstmt = conn.prepareStatement(USERS_INSERT);
-						pstmt.setString(1, userDO.getId());
-						pstmt.setString(2, userDO.getPassword());
-						
-						//³Ñ¾î¿Â ÆĞ½º¿öµå¸¦ ¾ÏÈ£È­ ½ÃÄÑ¼­ ¼¼ ¹øÂ° ¹°À½Ç¥°ªÀ¸·Î ÁöÁ¤ÇÑ´Ù.
-						String plainText = userDO.getPassword();
-						pwEncrypt = PasswordEncryptUtil.encryptSHA256(plainText);
-						pstmt.setString(3, pwEncrypt);
-						pstmt.setString(4, userDO.getName());
-						pstmt.setString(5, userDO.getRole());
-						pstmt.executeUpdate();						
-					}catch(Exception e) {
-						System.out.println("insertUser() :" + e);
-					}finally {
-						JDBCUtil.close(pstmt, conn);
-					}
-				}
+		try {
+			System.out.println("===> JDBCë¡œ getUser() ê¸°ëŠ¥ ì²˜ë¦¬ë¨!");
+			
+			conn = JDBCUtil.getConnection(); //dbì—°ê²°í•´ì„œ dbì—°ê²° ê°ì²´ connì´ ë°›ìŒ
+			pstmt = conn.prepareStatement(USER_GET);
+			pstmt.setString(1, userObj.getId());
+			pstmt.setString(2, userObj.getPassword());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				user = new UserDO();
+				user.setId(rs.getString("ID"));
+				user.setPassword(rs.getString("PASSWORD"));
+				user.setName(rs.getString("NAME"));
+				user.setPwencrypt(rs.getString("PWENCRYPT"));
+				user.setRole(rs.getString("ROLE"));
 			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		
+		return user;
+	}
+	
+	//íšŒì›ê°€ì… user ì…ë ¥(insert) ë©”ì†Œë“œ êµ¬í˜„
+	public int insertUser(UserDO userDO) {
+		System.out.println("==>insertUser() ê¸°ëŠ¥ ì²˜ë¦¬");
+		int result = 0;
+			
+		try {
+			conn = JDBCUtil.getConnection();
+			pstmt = conn.prepareStatement(USER_INSERT);
+			pstmt.setString(1, userDO.getId());
+			pstmt.setString(2, userDO.getPassword());
+			//ë„˜ì–´ì˜¨ íŒ¨ìŠ¤ì›Œë“œë¥¼ ì•”í˜¸í™”ì‹œì¼œì„œ ì„¸ë²ˆì§¸ ë¬¼ìŒí‘œ ê°’ìœ¼ë¡œ ì§€ì •í•œë‹¤.
+			String plainText = userDO.getPassword();
+			pwEncrypt = PasswordEncryptUtil.encryptSHA256(plainText);
+			pstmt.setString(3, pwEncrypt);
+			pstmt.setString(4, userDO.getName());
+			pstmt.setString(5, userDO.getRole());
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("insertUser(): "+e);
+		}finally {
+			JDBCUtil.close(pstmt, conn);
+		}
+		return result;
+	}
+	
+		
+}

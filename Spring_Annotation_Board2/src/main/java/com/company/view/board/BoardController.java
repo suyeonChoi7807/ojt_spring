@@ -1,56 +1,61 @@
 package com.company.view.board;
 
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.company.annotation.board.BoardDAO;
 import com.company.annotation.board.BoardDO;
 
 /**
  * 
- * Ä¿¸Çµå(command) °´Ã¼¶õ?
- *   => Å¬¶óÀÌ¾ğÆ®°¡ º¸³»ÁÖ´Â ÆÄ¶ó¹ÌÅÍ°¡ ÀÚµ¿À¸·Î ´ã°Ü¼­ ¹İÈ¯µÇ´Â °´Ã¼¸¦ ¸»ÇÑ´Ù.
- *      ÀÌ´Â 'ÀÚµ¿ °´Ã¼ º¯È¯'ÀÌ¶ó°íµµ ÇÏ¸ç, MVC µğÀÚÀÎ ÆĞÅÏ¿¡¼­ °¡Àå Å« ÇÙ½É ±â¼ú Áß¿¡ 
- *      ÇÏ³ªÀÌ´Ù.
- * ½ºÇÁ¸µ¿¡¼­´Â  @RequestMappingÀ» ÀÌ¿ëÇÏ¿© HandlerMapping ¼³Á¤À» ´ëÃ¼ÇÑ´Ù.    
+ * ì»¤ë§¨ë“œ(command) ê°ì²´ë€?
+ * => í´ë¼ì´ì–¸íŠ¸ê°€ ë³´ë‚´ì£¼ëŠ” íŒŒë¼ë¯¸í„°ê°€ ìë™ìœ¼ë¡œ ë‹´ê²¨ì„œ ë°˜í™˜ë˜ëŠ” ê°ì²´ë¥¼ ë§í•œë‹¤.
+ * ì´ëŠ” 'ìë™ ê°ì²´ ë³€í™˜' ì´ë¼ê³ ë„ í•˜ë©°, MVC ë””ìì¸ íŒ¨í„´ì—ì„œ ê°€ì¥ í° í•µì‹¬ ê¸°ìˆ  ì¤‘ì— í•˜ë‚˜ì´ë‹¤.
+ * ìŠ¤í”„ë§ì—ì„œëŠ” @RequestMappingì„ ì´ìš©í•˜ì—¬ HandlerMapping ì„¤ì •ì„ ëŒ€ì²´í•œë‹¤.
  */
 
 @Controller
-public class BoardController {  //ÅëÇÕ ÄÁÆ®·Ñ·¯
-	//ÀüÃ¼ °Ô½Ã±Û ¸ñ·Ï °Ë»ö
+public class BoardController { //ê²Œì‹œíŒ í†µí•© controller
+
+	@Autowired
+	BoardDAO boardDAO;
+	
+	
+	//ì „ì²´ ê²Œì‹œê¸€ ëª©ë¡ ì¡°íšŒ
 	@RequestMapping("/getBoardList.do")
-	public String getBoardList(BoardDO boardDO, BoardDAO boardDAO, Model model) {
+	public String getBoardList(BoardDO boardDO, Model model) {
 		model.addAttribute("boardList", boardDAO.getBoardList(boardDO));
 		return "getBoardList.jsp";
 	}
-	//°Ô½Ã±Û »ó¼¼º¸±â
+	
+	//ê²Œì‹œê¸€ ìƒì„¸ë³´ê¸°
 	@RequestMapping("/getBoard.do")
-	public String getBoard(BoardDO boardDO, BoardDAO boardDAO, Model model) {
+	public String getBoard(BoardDO boardDO, Model model) {
 		model.addAttribute("board", boardDAO.getBoard(boardDO));
+		boardDAO.updateCnt(boardDO);
 		return "getBoard.jsp";
 	}
-	//[ÈùÆ®] DML ÀÛ¾÷ ½Ã ¿¡´Â BoardDO boardDO, BoardDAO boardDAO¸¸ ÄÄ¸ÇÆ® °´Ã¼·Î ¹ŞÀ¸¸é µÈ´Ù.
-	//°Ô½Ã±Û µî·Ï
-	@RequestMapping("/insertBoard.do")
-	public String insertBoard(BoardDO boardDO, BoardDAO boardDAO) {
-		boardDAO.insertBoard(boardDO);
-		return "getBoardList.do";
-	}
-	//°Ô½Ã±Û ¼öÁ¤
+	
+	//ê²Œì‹œê¸€ ìˆ˜ì •í•˜ê¸°
 	@RequestMapping("/updateBoard.do")
-	public String updateBoard(BoardDO boardDO, BoardDAO boardDAO) {
-		boardDAO.updateBoard(boardDO);
+	public String updateBoard(BoardDO boardDO) {
+		boardDAO.updateBoard(boardDO);		
 		return "getBoardList.do";
 	}
 	
-	//°Ô½Ã±Û »èÁ¦
+	//ê²Œì‹œê¸€ ë“±ë¡í•˜ê¸°
+	@RequestMapping("/insertBoard.do")
+	public String insertBoard(BoardDO boardDO) {
+		boardDAO.insertBoard(boardDO);		
+		return "getBoardList.do";
+	}
+	
+	//ê²Œì‹œê¸€ ì‚­ì œí•˜ê¸°
 	@RequestMapping("/deleteBoard.do")
-	public String deleteBoard(BoardDO boardDO, BoardDAO boardDAO) {
-		boardDAO.deleteBoard(boardDO);
+	public String deleteBoard(BoardDO boardDO) {
+		boardDAO.deleteBoard(boardDO);			
 		return "getBoardList.do";
 	}
 }

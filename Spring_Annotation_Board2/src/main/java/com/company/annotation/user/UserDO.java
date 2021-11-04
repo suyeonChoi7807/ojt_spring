@@ -3,10 +3,11 @@ package com.company.annotation.user;
 public class UserDO {
 	private String id;
 	private String password;
+	private String pwencrypt; //추가
 	private String name;
 	private String role;
 	
-	//getter, setter �޼ҵ�
+	//getter, setter 메소드
 	public String getId() {
 		return id;
 	}
@@ -18,6 +19,12 @@ public class UserDO {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getPwencrypt() {
+		return pwencrypt;
+	}
+	public void setPwencrypt(String pwencrypt) {
+		this.pwencrypt = pwencrypt;
 	}
 	public String getName() {
 		return name;
@@ -31,4 +38,6 @@ public class UserDO {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	
 }
